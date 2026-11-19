@@ -242,7 +242,7 @@
   @media (min-width:820px){ .months{grid-template-columns:1fr 1fr;gap:22px} }
   .month h3{font-size:1.22rem;margin:0 0 4px;font-weight:800;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
   .month h3 .mnote{font-family:"Hind Siliguri",sans-serif;font-size:.8rem;font-weight:600;color:var(--muted);text-align:right}
-  .dow,.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .dow,.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
   .dow{margin:8px 0 6px}
   .dow span{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:2px 0}
   .dow span.fri{color:#d4576a}
@@ -252,7 +252,7 @@
     color:var(--text);transition:transform .08s ease, background .12s ease, border-color .12s ease;
   }
   .day .dnum{font-weight:700;font-size:1.02rem;line-height:1.1;font-variant-numeric:tabular-nums}
-  .day .dtag{font-size:.56rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;line-height:1.15;text-align:center;color:var(--muted)}
+  .day .dtag{font-size:.56rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;line-height:1.15;text-align:center;color:var(--muted);overflow-wrap:anywhere}
   .day:hover{border-color:var(--person)}
   .day:active{transform:scale(.96)}
   .day:focus-visible{outline:3px solid var(--accent-deep);outline-offset:2px}
