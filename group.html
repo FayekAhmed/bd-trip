@@ -97,6 +97,31 @@
   .best-row:last-child{ border-bottom: none; }
   .best-row b{ white-space: nowrap; }
   .foot{ color: var(--muted); font-size: 12.5px; line-height: 1.55; text-align: center; padding: 0 8px; }
+  /* Day popup: tap a date, see who's free that day */
+  .popup-backdrop{
+    position: fixed; inset: 0; z-index: 50; display: none;
+    background: rgb(0 0 0 / 0.55); padding: 20px 16px;
+    align-items: center; justify-content: center;
+  }
+  .popup-backdrop.open{ display: flex; }
+  .popup{
+    background: rgb(23 20 32 / 0.92);
+    border: 1px solid var(--glass-border); border-radius: var(--radius);
+    box-shadow: var(--glass-shadow); padding: 20px; width: 100%; max-width: 360px;
+    -webkit-backdrop-filter: blur(20px) saturate(125%); backdrop-filter: blur(20px) saturate(125%);
+  }
+  .popup-head{ display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .popup-date{ font-size: 19px; font-weight: 700; line-height: 1.2; }
+  .popup-count{ color: var(--muted); font-size: 13.5px; margin-top: 3px; }
+  .popup-close{
+    flex: none; width: 32px; height: 32px; border-radius: 50%;
+    background: var(--lav); border: 1px solid rgb(255 255 255 / 0.09);
+    color: var(--text); font-size: 15px; line-height: 1; cursor: pointer;
+  }
+  .popup-list{ margin-top: 14px; display: flex; flex-direction: column; gap: 9px; }
+  .popup-row{ display: flex; align-items: center; gap: 9px; font-size: 15px; }
+  .popup-row .dot{ width: 11px; height: 11px; border-radius: 50%; flex: none; }
+  .popup-note{ color: var(--muted); font-size: 14.5px; line-height: 1.5; margin-top: 12px; }
 </style>
 </head>
 <body>
@@ -127,6 +152,20 @@
 
   <p class="foot">Fayek is in Bangladesh Dec 5, 2026 – Jan 15, 2027. Dec 21–25 he's at Alvi's wedding, so those days are blocked. This page updates as more friends reply in the group chat.</p>
 
+</div>
+
+<div class="popup-backdrop" id="popupBackdrop">
+  <div class="popup" role="dialog" aria-modal="true" aria-labelledby="popupDate">
+    <div class="popup-head">
+      <div>
+        <div class="popup-date" id="popupDate"></div>
+        <div class="popup-count" id="popupCount"></div>
+      </div>
+      <button class="popup-close" id="popupClose" aria-label="Close">✕</button>
+    </div>
+    <div class="popup-list" id="popupList"></div>
+    <p class="popup-note" id="popupNote" style="display:none"></p>
+  </div>
 </div>
 
 <script>
@@ -205,6 +244,42 @@ function renderLegend(){
   ).join("");
 }
 
+/* --- Day popup -----------------------------------------------------------
+ * One builder for every popup: a free day lists its people (dot + name,
+ * built with textContent — names are data, never markup), a blocked day
+ * shows its reason, an empty day says so. */
+function openDayPopup(key){
+  const free = byDay[key] || [];
+  const list = document.getElementById("popupList");
+  const note = document.getElementById("popupNote");
+  list.replaceChildren();
+  document.getElementById("popupDate").textContent = pretty(key);
+  document.getElementById("popupCount").textContent = BLOCKED[key]
+    ? "Blocked" : free.length ? `${free.length} free` : "";
+  free.forEach(name => {
+    const row = document.createElement("div");
+    row.className = "popup-row";
+    const dot = document.createElement("span");
+    dot.className = "dot";
+    dot.style.background = COLORS[name];
+    const label = document.createElement("span");
+    label.textContent = name;
+    row.append(dot, label);
+    list.appendChild(row);
+  });
+  note.textContent = BLOCKED[key]
+    ? `${BLOCKED[key]} — Fayek is unavailable this day.`
+    : free.length ? "" : "Nobody's marked free yet this day.";
+  note.style.display = note.textContent ? "" : "none";
+  document.getElementById("popupBackdrop").classList.add("open");
+}
+function closeDayPopup(){ document.getElementById("popupBackdrop").classList.remove("open"); }
+document.getElementById("popupClose").addEventListener("click", closeDayPopup);
+document.getElementById("popupBackdrop").addEventListener("click", e => {
+  if (e.target === e.currentTarget) closeDayPopup();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDayPopup(); });
+
 function buildGrid(elId, year, month){
   const el = document.getElementById(elId);
   let html = ["Su","Mo","Tu","We","Th","Fr","Sa"].map(d => `<div class="dow">${d}</div>`).join("");
@@ -215,7 +290,7 @@ function buildGrid(elId, year, month){
     const key = iso(year, month, d);
     const free = byDay[key] || [];
     if (BLOCKED[key]){
-      html += `<div class="day blocked"><span>${d}</span><span class="tag">${BLOCKED[key]}</span></div>`;
+      html += `<div class="day blocked" data-day="${key}" style="cursor:pointer"><span>${d}</span><span class="tag">${BLOCKED[key]}</span></div>`;
     } else if (TRAVEL[key]){
       html += `<div class="day outside"><span>${d}</span><span class="tag">${TRAVEL[key]}</span></div>`;
     } else if (key < TRIP_START || key > TRIP_END){
@@ -232,10 +307,7 @@ function buildGrid(elId, year, month){
     cell.addEventListener("click", () => {
       document.querySelectorAll(".day.selected").forEach(c => c.classList.remove("selected"));
       cell.classList.add("selected");
-      const key = cell.dataset.day, free = byDay[key] || [];
-      document.getElementById("detail").innerHTML = free.length
-        ? `<b>${pretty(key)}</b> — ${free.length} free<br><span class="who">${free.join(", ")}</span>`
-        : `<b>${pretty(key)}</b> — nobody's marked free yet.`;
+      openDayPopup(cell.dataset.day);
     });
   });
 }
