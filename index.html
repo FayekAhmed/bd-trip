@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<link rel="icon" href="data:," />
+<title>Bangladesh Trip Availability Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    color-scheme: dark;
+    --bg:#05060a;
+    --text:#e3e5ef;
+    --muted:rgb(227 229 239 / .5);
+    --line:rgb(255 255 255 / .09);
+    --glass:rgb(255 255 255 / .045);
+    --glass-2:rgb(255 255 255 / .035);
+    --glass-border:rgb(255 255 255 / .1);
+    --glass-shadow:inset 0 1px 0 rgb(255 255 255 / .09), 0 14px 34px rgb(0 0 0 / .5);
+    --warm:rgb(35 23 30 / .55);
+    --accent:#5da79b;
+    --accent-deep:#357d77;
+    --accent-ink:#e8f0ee;
+    --teal-btn:linear-gradient(120deg in oklch, rgb(43 94 90 / .9), rgb(35 78 75 / .9));
+    --teal-border:rgb(140 190 182 / .2);
+    --lav:rgb(139 143 178 / .25);
+    --lav-border:rgb(255 255 255 / .09);
+    --sel:rgb(58 124 118 / .45);
+    --sel-border:rgb(140 190 182 / .25);
+    --amber-1:#47222e;
+    --amber-2:#532936;
+    --amber-ink:#e0c6cc;
+    --bd-green:#006a4e;
+    --bd-red:#c40e30;
+    --rose:#d98a94;
+    --person:#2e6f6a;
+    --person-ink:#ffffff;
+    --shadow:0 14px 34px rgb(0 0 0 / .5);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;background:var(--bg)}
+  html,body{margin:0;padding:0}
+  body{
+    background:transparent;
+    color:var(--text);
+    font-family:"Hind Siliguri",system-ui,-apple-system,"Segoe UI",sans-serif;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+    min-height:100dvh;
+  }
+  /* Backdrop scents: indigo top-left, deep green right, black-amber bottom */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:
+      radial-gradient(900px 620px at 10% -5%, rgb(53 66 115 / .62), transparent 62%),
+      radial-gradient(820px 720px at 106% 30%, rgb(13 47 30 / .58), transparent 62%),
+      radial-gradient(1050px 520px at 50% 116%, rgb(94 44 56 / .40), transparent 66%);
+  }
+  /* Far-end glow anchored to the document bottom: warm-dark, never flat black */
+  body::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:min(900px,130vh);z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(920px 500px at 50% 118%, rgb(94 44 56 / .37), transparent 66%),
+      radial-gradient(620px 340px at 80% 112%, rgb(94 44 56 / .32), transparent 62%);
+  }
+  button,input,textarea{font:inherit}
+  button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:2.25rem}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 14px 44px}
+  h1,h2,h3{font-family:"Bricolage Grotesque","Hind Siliguri",sans-serif}
+
+  /* ---------- Buttons (soft: dusty lavender pills, muted teal primary) ---------- */
+  .btn{
+    appearance:none;border:1px solid var(--lav-border);background:var(--lav);color:var(--text);
+    border-radius:999px;padding:9px 18px;font-weight:700;font-size:.95rem;cursor:pointer;min-height:46px;
+    display:inline-flex;align-items:center;gap:8px;text-decoration:none;justify-content:center;
+  }
+  .btn:hover{border-color:rgb(255 255 255 / .22)}
+  .btn:focus-visible{outline:3px solid var(--accent-deep);outline-offset:2px}
+  .btn.primary{background:var(--teal-btn);border-color:var(--teal-border);color:var(--accent-ink)}
+  .btn.primary:hover{filter:brightness(1.1)}
+  .btn.ghost{background:rgb(139 143 178 / .14)}
+  .btn.small{min-height:42px;padding:7px 14px;font-size:.9rem}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    margin:0 -14px;padding:34px 20px 30px;
+    background:
+      radial-gradient(560px 260px at 85% -40px, rgb(53 66 115 / .45), transparent 65%);
+    border-bottom:1px solid var(--line);
+    position:relative;overflow:hidden;
+  }
+  @media (min-width:700px){ .hero{padding:52px 34px 42px} }
+  .hero .flag{
+    display:inline-flex;align-items:center;gap:10px;font-size:.78rem;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 8px;background:rgb(255 255 255 / .05);
+  }
+  .hero .flag i{width:18px;height:18px;border-radius:50%;background:var(--bd-red);opacity:.85;box-shadow:inset 0 0 0 5px var(--bd-green);display:inline-block}
+  .hero h1{
+    font-size:clamp(2.1rem,8vw,3.6rem);line-height:.98;font-weight:800;letter-spacing:-.015em;
+    margin:18px 0 12px;max-width:12ch;
+  }
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero p.lede{font-size:clamp(1.02rem,3.4vw,1.2rem);color:var(--muted);margin:0 0 22px;max-width:56ch}
+  .hero p.lede strong{color:var(--text)}
+  .hero-cards{display:grid;gap:10px;margin:0 0 24px}
+  @media (min-width:640px){ .hero-cards{grid-template-columns:repeat(3,1fr)} }
+  .hcard{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:14px 16px;
+    -webkit-backdrop-filter:blur(20px) saturate(125%);backdrop-filter:blur(20px) saturate(125%);
+    box-shadow:var(--glass-shadow);
+  }
+  .hcard .k{font-size:.74rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 3px}
+  .hcard .v{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.18rem;line-height:1.15;margin:0}
+  .hcard .s{color:var(--muted);font-size:.9rem;margin:2px 0 0}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:10px}
+  .hero-cta .btn{flex:1 1 200px}
+  @media (min-width:640px){ .hero-cta .btn{flex:0 1 auto;padding-left:24px;padding-right:24px} }
+
+  /* ---------- Sections ---------- */
+  section.block{margin-top:34px}
+  .sec-head{margin:0 0 14px}
+  .sec-head .k{font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 4px}
+  .sec-head h2{font-size:clamp(1.45rem,5vw,1.9rem);font-weight:800;margin:0;line-height:1.1}
+  .sec-head p{color:var(--muted);margin:6px 0 0;max-width:60ch}
+
+  .steps{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+  @media (min-width:720px){ .steps{grid-template-columns:repeat(3,1fr)} }
+  .steps li{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:18px;
+    -webkit-backdrop-filter:blur(20px) saturate(125%);backdrop-filter:blur(20px) saturate(125%);
+    box-shadow:var(--glass-shadow);
+  }
+  .steps .num{
+    width:38px;height:38px;border-radius:50%;background:var(--teal-btn);color:var(--accent-ink);
+    display:grid;place-items:center;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:10px;
+  }
+  .steps h3{margin:0 0 4px;font-size:1.08rem;font-weight:800}
+  .steps p{margin:0;color:var(--muted);font-size:.95rem}
+
+  /* ---------- Tool panels ---------- */
+  .panel{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;padding:18px;margin-bottom:14px;
+    -webkit-backdrop-filter:blur(20px) saturate(125%);backdrop-filter:blur(20px) saturate(125%);
+    box-shadow:var(--glass-shadow);
+  }
+  .panel h3{font-size:1.08rem;margin:0 0 6px;font-weight:800}
+  .panel p.hint{margin:0 0 14px;color:var(--muted);font-size:.95rem}
+  input[type="text"]{
+    width:100%;padding:11px 13px;border-radius:10px;border:1px solid var(--line);
+    background:rgb(255 255 255 / .04);color:var(--text);font-size:1.05rem;font-weight:600;min-height:50px;
+  }
+  input[type="text"]:focus{outline:3px solid var(--accent-deep);outline-offset:1px;border-color:var(--accent-deep)}
+  .colors{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+  .swatch{
+    width:46px;height:46px;border-radius:50%;border:3px solid transparent;cursor:pointer;padding:0;
+    display:grid;place-items:center;color:#fff;font-weight:800;font-size:.9rem;
+  }
+  .swatch[aria-pressed="true"]{border-color:var(--text)}
+  .swatch:focus-visible{outline:3px solid var(--accent-deep);outline-offset:2px}
+  .names{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+  @media (min-width:640px){ .names{grid-template-columns:repeat(3,1fr)} }
+  .name-chip{
+    appearance:none;display:flex;align-items:center;gap:9px;text-align:left;cursor:pointer;
+    background:var(--lav);border:1px solid var(--lav-border);border-radius:999px;padding:10px 14px;
+    color:var(--text);font-weight:600;font-size:.95rem;min-height:48px;line-height:1.2;
+  }
+  .name-chip .dot{width:16px;height:16px;border-radius:50%;flex:0 0 auto;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)}
+  .name-chip:hover{border-color:rgb(255 255 255 / .22)}
+  .name-chip[aria-pressed="true"]{border-color:var(--sel-border);background:var(--sel)}
+  .name-chip:focus-visible{outline:3px solid var(--accent-deep);outline-offset:2px}
+  .quick{display:flex;flex-wrap:wrap;gap:9px}
+  .cal-actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 14px}
+
+  /* ---------- Save / Send panel (warmed: black-amber) ---------- */
+  .save-panel{
+    margin-top:14px;border:1px solid rgb(255 255 255 / .12);background:var(--warm);border-radius:18px;padding:20px;
+    -webkit-backdrop-filter:blur(20px) saturate(125%);backdrop-filter:blur(20px) saturate(125%);
+    box-shadow:var(--glass-shadow);
+  }
+  .save-panel h3{font-size:1.2rem;margin:0 0 6px;font-weight:800}
+  .save-panel p.hint{margin:0 0 14px;color:var(--muted);font-size:.95rem}
+  .save-panel p.hint strong{color:var(--text)}
+  .save-btn{
+    width:100%;min-height:58px;font-size:1.08rem;border-radius:14px;
+  }
+  .save-btn[aria-disabled="true"],.save-btn:disabled{opacity:.45;pointer-events:none;filter:saturate(.4)}
+  .saved-badge{
+    display:inline-flex;align-items:center;gap:8px;background:var(--teal-btn);color:var(--accent-ink);
+    font-weight:800;font-size:.9rem;border-radius:999px;padding:6px 14px;margin:0 0 10px;
+  }
+  .save-note{margin:12px 0 0;font-size:.9rem;color:var(--muted);text-align:center}
+  .save-status{font-size:.92rem;font-weight:700;color:var(--accent);min-height:1.3em;margin:10px 0 0;text-align:center}
+  .summary-box{background:var(--glass-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 14px}
+  .summary-box .summary-line{margin:0 0 4px;font-size:1rem}
+  .summary-box .summary-line strong{font-size:1.05rem}
+  .summary-dot{display:inline-block;width:15px;height:15px;border-radius:50%;vertical-align:-2px;margin-left:4px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)}
+
+  /* ---------- Calendar card (dark glass) ---------- */
+  .shot{
+    background:var(--glass);color:var(--text);border-radius:20px;box-shadow:var(--glass-shadow);overflow:hidden;
+    border:1px solid var(--glass-border);
+    -webkit-backdrop-filter:blur(20px) saturate(125%);backdrop-filter:blur(20px) saturate(125%);
+  }
+  .shot-head{
+    padding:22px 22px 16px;position:relative;color:var(--text);
+    background:linear-gradient(180deg in oklch, rgb(0 106 78 / .30), rgb(0 106 78 / .08));
+    border-bottom:1px solid rgb(255 255 255 / .08);
+  }
+  .shot-head .flag-dot{
+    position:absolute;right:22px;top:26px;width:58px;height:58px;border-radius:50%;
+    background:var(--bd-red);opacity:.8;border:3px solid rgb(255 255 255 / .18);
+  }
+  @media (max-width:520px){ .shot-head .flag-dot{width:44px;height:44px;top:20px;right:16px} }
+  .trip-kicker{font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.92;margin:0 0 4px}
+  .shot-head h2{font-size:clamp(1.55rem,5.2vw,2.3rem);line-height:1.02;margin:0 52px 6px 0;font-weight:800;letter-spacing:-.01em}
+  .trip-dates{margin:0;font-size:.98rem;font-weight:600;opacity:.96}
+  .trip-dates span{white-space:nowrap}
+  .who{
+    margin-top:16px;background:rgb(255 255 255 / .05);border:1px solid rgb(255 255 255 / .12);
+    border-radius:12px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;
+  }
+  .who .lbl{font-size:.76rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+  .who .name{
+    font-family:"Bricolage Grotesque",sans-serif;font-weight:800;
+    font-size:clamp(1.35rem,4.5vw,1.9rem);line-height:1;color:var(--person);
+    text-shadow:0 1px 0 rgba(0,0,0,.4);word-break:break-word;
+  }
+  .who .name.is-empty{color:var(--text);opacity:.75;font-weight:600;font-size:1.05rem;text-shadow:none}
+  .who .count{font-weight:700;font-size:.95rem}
+  .shot-body{padding:18px 18px 8px}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:0 2px 14px;font-size:.92rem;color:var(--muted);font-weight:600}
+  .legend .sw{display:inline-block;width:16px;height:16px;border-radius:5px;vertical-align:-3px;margin-right:6px;border:1px solid rgb(255 255 255 / .15)}
+  .legend .sw.free{background:var(--person);border-color:transparent}
+  .legend .sw.busy{background:rgb(255 255 255 / .05)}
+  .legend .sw.off{background:repeating-linear-gradient(45deg,rgb(255 255 255 / .10) 0 4px,transparent 4px 8px)}
+  .months{display:grid;grid-template-columns:1fr;gap:26px}
+  @media (min-width:820px){ .months{grid-template-columns:1fr 1fr;gap:22px} }
+  .month h3{font-size:1.22rem;margin:0 0 4px;font-weight:800;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .month h3 .mnote{font-family:"Hind Siliguri",sans-serif;font-size:.8rem;font-weight:600;color:var(--muted);text-align:right}
+  .dow,.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .dow{margin:8px 0 6px}
+  .dow span{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:2px 0}
+  .dow span.fri{color:#d4576a}
+  .day{
+    appearance:none;border:1px solid rgb(255 255 255 / .1);background:rgb(255 255 255 / .04);border-radius:10px;min-height:52px;
+    padding:5px 2px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:1px;
+    color:var(--text);transition:transform .08s ease, background .12s ease, border-color .12s ease;
+  }
+  .day .dnum{font-weight:700;font-size:1.02rem;line-height:1.1;font-variant-numeric:tabular-nums}
+  .day .dtag{font-size:.56rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;line-height:1.15;text-align:center;color:var(--muted)}
+  .day:hover{border-color:var(--person)}
+  .day:active{transform:scale(.96)}
+  .day:focus-visible{outline:3px solid var(--accent-deep);outline-offset:2px}
+  .day.is-free{background:var(--person);border-color:var(--person);color:var(--person-ink)}
+  .day.is-free .dtag{color:var(--person-ink);opacity:.92}
+  .day.is-anchor{
+    border-color:rgb(227 229 239 / .9);border-width:2.5px;
+    box-shadow:inset 0 0 0 2px rgb(5 6 10 / .55), 0 0 0 3px var(--person);
+    position:relative;z-index:1;
+  }
+  .day.is-anchor .dtag{font-weight:800;color:inherit;opacity:1}
+  .legend .sw.anchor{background:rgb(255 255 255 / .06);border:2.5px solid rgb(227 229 239 / .85);box-shadow:inset 0 0 0 2px rgb(5 6 10 / .6),0 0 0 2px var(--person)}
+  .range-status{
+    display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;
+    margin:0 2px 14px;padding:10px 12px;border-radius:10px;border:1.5px dashed rgb(255 255 255 / .18);
+    background:rgb(255 255 255 / .04);color:rgb(227 229 239 / .78);font-size:.92rem;font-weight:600;
+  }
+  .range-status.is-pending{background:var(--person);border:1.5px solid var(--person);color:var(--person-ink)}
+  .range-status .btn{min-height:38px;padding:5px 12px;font-size:.85rem;background:rgb(5 6 10 / .28)}
+  .day.is-off{background:transparent;border-style:dashed;border-color:rgb(255 255 255 / .14);cursor:default;opacity:.4;pointer-events:none}
+  .day.is-off .dnum{font-weight:500}
+  .day.is-blocked{
+    background:repeating-linear-gradient(45deg in oklch, rgb(244 42 65 / .18) 0 6px, rgb(244 42 65 / .06) 6px 12px);
+    border-color:rgb(232 160 168 / .45);color:var(--rose);cursor:default;
+  }
+  .day.is-blocked:hover{border-color:rgb(232 160 168 / .45)}
+  .day.is-blocked .dtag{color:var(--rose);font-weight:800}
+  .legend .sw.blocked{background:repeating-linear-gradient(45deg, rgb(244 42 65 / .30) 0 4px, rgb(244 42 65 / .08) 4px 8px);border-color:rgb(232 160 168 / .5)}
+  .day.blank{border:none;background:transparent;pointer-events:none;min-height:52px}
+  .shot-foot{padding:14px 18px 20px;border-top:1.5px dashed rgb(255 255 255 / .14);margin-top:16px}
+  .shot-foot h3{margin:0 0 8px;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:"Hind Siliguri",sans-serif}
+  .weeks{display:flex;flex-wrap:wrap;gap:8px}
+  .wk{
+    border:1px solid rgb(255 255 255 / .1);border-radius:999px;padding:6px 12px;font-size:.87rem;font-weight:600;
+    background:rgb(255 255 255 / .05);color:var(--text);display:inline-flex;gap:7px;align-items:center;font-variant-numeric:tabular-nums;
+  }
+  .wk b{font-weight:800}
+  .wk .bar{width:42px;height:8px;border-radius:99px;background:rgb(255 255 255 / .08);overflow:hidden;border:1px solid rgb(255 255 255 / .1)}
+  .wk .bar i{display:block;height:100%;background:var(--person);width:0%}
+  .wk.best{
+    background:linear-gradient(120deg in oklch, var(--amber-1), var(--amber-2));
+    border-color:rgb(224 198 204 / .25);color:var(--amber-ink);
+  }
+  .foot-note{margin:12px 0 0;font-size:.9rem;color:var(--muted)}
+  .foot-note strong{color:var(--text)}
+
+  /* ---------- Footer (warmed: black-amber) ---------- */
+  .site-foot{
+    margin-top:36px;background:var(--warm);border:1px solid var(--glass-border);border-radius:18px;padding:20px;
+    -webkit-backdrop-filter:blur(20px) saturate(125%);backdrop-filter:blur(20px) saturate(125%);
+    box-shadow:var(--glass-shadow);
+  }
+  .site-foot h2{font-size:1.2rem;margin:0 0 8px;font-weight:800}
+  .site-foot p{margin:0 0 8px;color:var(--muted)}
+  .site-foot p strong{color:var(--text)}
+  .site-foot .dark-demo{display:flex;gap:5px;margin:14px 0 4px;flex-wrap:wrap}
+  .site-foot .dark-demo i{width:30px;height:30px;border-radius:8px;display:block;border:1px solid var(--line)}
+  .site-foot .dark-cap{font-size:.85rem;color:var(--muted);margin:0}
+
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ 1 · HERO ============ -->
+  <header class="hero">
+    <span class="flag"><i aria-hidden="true"></i> Bangladesh · Dec 2026 – Jan 2027</span>
+    <h1>Fayek's coming home. <em>Let's hang out.</em></h1>
+    <p class="lede">I'm in Bangladesh for six weeks — <strong>hanging out, eating everything, and doing at least one proper tour with the whole group.</strong> Tell me which days you're free and we'll lock the plan around the days that work for the most people.</p>
+    <div class="hero-cards">
+      <div class="hcard">
+        <p class="k">In Bangladesh</p>
+        <p class="v">Dec 5, 2026 – Jan 15, 2027</p>
+        <p class="s">Flights: out Dec 4 · home Jan 16</p>
+      </div>
+      <div class="hcard">
+        <p class="k">The window</p>
+        <p class="v">42 days · 6 weeks</p>
+        <p class="s">Plenty of room for everyone</p>
+      </div>
+      <div class="hcard">
+        <p class="k">The plan</p>
+        <p class="v">Hangouts + a group tour</p>
+        <p class="s">Dates picked from your answers</p>
+      </div>
+    </div>
+    <div class="hero-cta">
+      <a class="btn primary" href="#calendar">Fill in your free days</a>
+      <a class="btn ghost" href="#how">How it works</a>
+    </div>
+  </header>
+
+  <!-- ============ 2 · HOW IT WORKS ============ -->
+  <section class="block how-sec" id="how" aria-label="How it works">
+    <div class="sec-head">
+      <p class="k">How it works</p>
+      <h2>Three steps, and your days are saved</h2>
+    </div>
+    <ol class="steps">
+      <li>
+        <span class="num" aria-hidden="true">1</span>
+        <h3>Tap your name</h3>
+        <p>Everyone's name is listed below — just tap yours, no typing. Your color is already assigned to you: it fills your days and puts your name in the calendar header. Heads up: <strong>Dec 21–25 are blocked off</strong> — Fayek's at Alvi's wedding, so don't plan the tour that week.</p>
+      </li>
+      <li>
+        <span class="num" aria-hidden="true">2</span>
+        <h3>Tap a block, carve the exceptions</h3>
+        <p>Free for a stretch? Tap the first day, then tap the last day — everything in between fills in your color, even across December into January. Then tap any filled day to remove just that one day.</p>
+      </li>
+      <li>
+        <span class="num" aria-hidden="true">3</span>
+        <h3>Tap “Save my days”</h3>
+        <p>Below the calendar you'll see your name, your color, and your days — give them a quick check, then tap <strong>Save my days</strong> and you're done. It saves right from this page, no new tab and no extra form to fill in.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 3 · CALENDAR TOOL ============ -->
+  <section class="block" id="calendar" aria-label="Availability calendar tool">
+    <div class="sec-head tool-head">
+      <p class="k">Your turn</p>
+      <h2>Your availability calendar</h2>
+      <p>Dec 4 and Jan 16 are my travel days, so they're locked — and <strong style="color:var(--text)">Dec 21–25 are blocked too: I'm at Alvi's wedding</strong>, so those days can't be picked and blocks skip right over them. Everything else from Dec 5 to Jan 15 is yours to tap — one day at a time, or tap a first and last day to fill a whole block at once.</p>
+    </div>
+
+    <div class="tool-controls">
+      <div class="panel">
+        <h3 style="margin-bottom:6px">Who are you?</h3>
+        <p class="hint">Tap your name — no typing. Your color is fixed to you, so it's the same color for you on everyone's phone.</p>
+        <div class="names" id="nameRow" role="group" aria-label="Pick your name"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Quick taps</h3>
+        <p class="hint">Shortcuts first, then fix things on the calendar: tap a day to start a block, tap the last day to fill everything between, and tap any filled day on its own to remove just that day.</p>
+        <div class="quick">
+          <button class="btn small" type="button" data-quick="weekends">All Fridays + Saturdays</button>
+          <button class="btn small" type="button" data-quick="fridays">Fridays only</button>
+          <button class="btn small" type="button" data-quick="all">Every day he's in BD</button>
+          <button class="btn small" type="button" data-quick="clear">Clear all</button>
+        </div>
+        <div class="quick" id="weekQuick" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <div class="cal-actions">
+      <button class="btn" id="clearTopBtn" type="button">Clear my days</button>
+    </div>
+
+    <!-- Calendar card -->
+    <div class="shot" id="shotCard">
+      <header class="shot-head">
+        <p class="trip-kicker">Fayek's Bangladesh Trip</p>
+        <h2>When are you free to hang out?</h2>
+        <p class="trip-dates"><span>Sat Dec 5, 2026</span> → <span>Fri Jan 15, 2027</span> &nbsp;·&nbsp; Dhaka, Bangladesh</p>
+        <div class="flag-dot" aria-hidden="true"></div>
+        <div class="who">
+          <span class="lbl">I'm free —</span>
+          <span class="name is-empty" id="displayName">tap your name above</span>
+          <span class="count" id="displayCount"></span>
+        </div>
+      </header>
+
+      <div class="shot-body">
+        <p class="legend">
+          <span><span class="sw free"></span>Solid colour = I'm free</span>
+          <span><span class="sw busy"></span>Empty = busy</span>
+          <span><span class="sw anchor"></span>Ringed = block start</span>
+          <span><span class="sw off"></span>Dashed = travel day / not in BD</span>
+          <span><span class="sw blocked"></span>Hatched red = Fayek unavailable — Alvi's wedding (Dec 21–25)</span>
+        </p>
+        <div class="range-status" id="rangeStatusWrap">
+          <span id="rangeStatus">Tip: tap a day, then tap another day — every day between them fills in. Tap a filled day on its own to remove just that day.</span>
+          <button class="btn small" id="cancelRangeBtn" type="button" hidden>Cancel block</button>
+        </div>
+        <div class="months" id="months"></div>
+      </div>
+
+      <footer class="shot-foot">
+        <h3>My free days by week</h3>
+        <div class="weeks" id="weekChips"></div>
+        <p class="foot-note" id="footNote">Tap the days you're free, then tap Save my days below — it saves right from this page.</p>
+      </footer>
+    </div>
+
+    <!-- Save directly from this page — hidden form posts in the background -->
+    <div class="save-panel" id="savePanel">
+      <div id="saveFormView">
+        <h3>Done tapping? Save your days</h3>
+        <p class="hint" id="saveHint">Tap your name above and tap at least one free day — your name, color, and days will show up here for a quick check before you save.</p>
+
+        <div class="summary-box" id="summaryBox" hidden>
+          <p class="summary-line">Your name: <strong id="summaryName"></strong></p>
+          <p class="summary-line">Your color: <strong id="summaryColor"></strong> <span class="summary-dot" id="summaryDot" aria-hidden="true"></span></p>
+          <p class="summary-line" style="margin-top:8px">Your days: <span id="summaryDays"></span></p>
+        </div>
+
+        <p class="hint">Check your name, color, and days above, then tap Save — it saves right from this page, no new tab.</p>
+        <button class="btn primary save-btn" id="saveBtn" type="button" disabled>Save my days</button>
+        <p class="save-status" id="saveStatus" role="status"></p>
+        <p class="save-note">Saves straight from this page — no sign-in, no extra form to fill in.</p>
+      </div>
+
+      <div id="savedState" hidden>
+        <span class="saved-badge" aria-hidden="true">✓ Saved</span>
+        <h3>Saved — your days are in.</h3>
+        <p class="hint" style="margin-bottom:12px">Thanks! Your availability is saved. You can close this page.</p>
+        <div class="summary-box">
+          <p class="summary-line">Saved for: <strong id="savedName"></strong></p>
+          <p class="summary-line">Color: <strong id="savedColor"></strong> <span class="summary-dot" id="savedDot" aria-hidden="true"></span></p>
+          <p class="summary-line" style="margin-top:8px">Days: <span id="savedDays"></span></p>
+        </div>
+        <button class="btn" id="editAgainBtn" type="button" style="width:100%;min-height:52px">Edit my days and re-save</button>
+        <p class="save-note">Changed your mind? Tap above, adjust your days on the calendar, then Save again.</p>
+      </div>
+
+      <!-- Hidden transport: posts to the form without leaving this page -->
+      <iframe name="gf_iframe" id="gfIframe" title="Saving" style="display:none" aria-hidden="true"></iframe>
+      <form id="gfForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdst1fyPibGqeT2eUmR0Azuzx2P6hmT4c4Alc8HtVjRiIxqUg/formResponse" method="POST" target="gf_iframe" style="display:none" aria-hidden="true">
+        <input type="hidden" name="entry.99315104" id="gfName" value="" />
+        <input type="hidden" name="entry.359241220" id="gfColor" value="" />
+        <input type="hidden" name="entry.1128436780" id="gfDays" value="" />
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ 4 · FOOTER NOTE ============ -->
+  <footer class="site-foot">
+    <h2>How the dates get picked</h2>
+    <p>Every saved response comes back in a <strong>different person's color</strong>. Stack them all together and the days where the most colors overlap mix into the <strong>darkest days</strong> — those are the winners. The hangouts and the group tour get planned on the darkest days and the strongest week, so the most people can actually make it.</p>
+    <div class="dark-demo" aria-hidden="true">
+      <i style="background:#0a2e22"></i>
+      <i style="background:#123f2c"></i>
+      <i style="background:#1a5c3a"></i>
+      <i style="background:#0f766e"></i>
+      <i style="background:#065f46"></i>
+      <i style="background:#022c22"></i>
+    </div>
+    <p class="dark-cap">More colors on a day = darker = more of the group is free.</p>
+    <p style="margin-top:12px">Trip blocks: <strong>Wk 1</strong> Dec 6–12 · <strong>Wk 2</strong> Dec 13–19 · <strong>Wk 3</strong> Dec 20–26 · <strong>Wk 4</strong> Dec 27–Jan 2 · <strong>Wk 5</strong> Jan 3–9 · <strong>Wk 6</strong> Jan 10–15.</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var TRIP_START = "2026-12-05"; // Saturday — first full day in BD (flight out Dec 4)
+  var TRIP_END   = "2027-01-15"; // Friday — last full day in BD (flight home Jan 16)
+
+  var WEEKS = [
+    { id:"Dec 5", label:"Dec 5 · landing / settling", from:"2026-12-05", to:"2026-12-05" },
+    { id:"Wk 1", label:"Wk 1 · Dec 6–12",   from:"2026-12-06", to:"2026-12-12" },
+    { id:"Wk 2", label:"Wk 2 · Dec 13–19",  from:"2026-12-13", to:"2026-12-19" },
+    { id:"Wk 3", label:"Wk 3 · Dec 20–26",  from:"2026-12-20", to:"2026-12-26" },
+    { id:"Wk 4", label:"Wk 4 · Dec 27–Jan 2", from:"2026-12-27", to:"2027-01-02" },
+    { id:"Wk 5", label:"Wk 5 · Jan 3–9",    from:"2027-01-03", to:"2027-01-09" },
+    { id:"Wk 6", label:"Wk 6 · Jan 10–15",  from:"2027-01-10", to:"2027-01-15" }
+  ];
+
+  // The group roster — alphabetical by first name so friends find themselves
+  // fast. Each person has ONE fixed color, the same on every phone.
+  var PEOPLE = [
+    { name:"Adiba Abanti",          colorName:"Rose",    hex:"#e11d48" },
+    { name:"Afia Ebnat",            colorName:"Purple",  hex:"#9333ea" },
+    { name:"Afifa Zahin",           colorName:"Blue",    hex:"#2563eb" },
+    { name:"Dhiraj Sp",             colorName:"Green",   hex:"#16a34a" },
+    { name:"Farhan Rahman",         colorName:"Pink",    hex:"#db2777" },
+    { name:"Fatin Shahad",          colorName:"Violet",  hex:"#7c3aed" },
+    { name:"Iffat Ara Tahsin",      colorName:"Sky",     hex:"#0284c7" },
+    { name:"Mahathir Islam",        colorName:"Orange",  hex:"#ea580c" },
+    { name:"Mustafizur Rahman",     colorName:"Teal",    hex:"#0d9488" },
+    { name:"Rafio",                 colorName:"Crimson", hex:"#dc2626" }
+  ];
+
+  // Fayek is at Alvi's wedding Dec 21–25 — inside the trip window but never
+  // selectable, and range fills / shortcuts skip straight over these days.
+  var BLOCKED = {
+    "2026-12-21":true, "2026-12-22":true, "2026-12-23":true,
+    "2026-12-24":true, "2026-12-25":true
+  };
+  function isBlocked(s){ return !!BLOCKED[s]; }
+
+  var MONTHS = [
+    { year:2026, month:11, title:"December 2026", note:"Dec 4 = flight out (locked) · Dec 21–25 = Alvi's wedding (blocked)" },
+    { year:2027, month:0,  title:"January 2027",  note:"Jan 16 = flight home (locked)" }
+  ];
+
+  var MONTH_SHORT = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  function iso(y,m,d){ return y + "-" + String(m+1).padStart(2,"0") + "-" + String(d).padStart(2,"0"); }
+  function inTrip(s){ return s >= TRIP_START && s <= TRIP_END; }
+  function pretty(s){
+    var p = s.split("-");
+    return MONTH_SHORT[parseInt(p[1],10)-1] + " " + parseInt(p[2],10);
+  }
+
+  var tripDates = [];
+  (function(){
+    var cur = new Date(2026,11,5), end = new Date(2027,0,15);
+    while (cur <= end){
+      tripDates.push(iso(cur.getFullYear(), cur.getMonth(), cur.getDate()));
+      cur.setDate(cur.getDate()+1);
+    }
+  })();
+
+  var state = { person:null, free:{} };
+  var rangeAnchor = null; // ISO date of a pending block start, or null
+
+  function personHex(){ return state.person ? state.person.hex : "#00a5a8"; }
+  function personName(){ return state.person ? state.person.name : ""; }
+  function personColorName(){ return state.person ? state.person.colorName : ""; }
+
+  var monthsEl    = document.getElementById("months");
+  var nameRow     = document.getElementById("nameRow");
+  var displayName = document.getElementById("displayName");
+  var displayCount= document.getElementById("displayCount");
+  var weekChips   = document.getElementById("weekChips");
+  var footNote    = document.getElementById("footNote");
+  var weekQuick   = document.getElementById("weekQuick");
+  var saveBtn     = document.getElementById("saveBtn");
+  var saveFormView= document.getElementById("saveFormView");
+  var savedState  = document.getElementById("savedState");
+  var savedName   = document.getElementById("savedName");
+  var savedColor  = document.getElementById("savedColor");
+  var savedDot    = document.getElementById("savedDot");
+  var savedDays   = document.getElementById("savedDays");
+  var editAgainBtn= document.getElementById("editAgainBtn");
+  var gfForm      = document.getElementById("gfForm");
+  var gfName      = document.getElementById("gfName");
+  var gfColor     = document.getElementById("gfColor");
+  var gfDays      = document.getElementById("gfDays");
+  var isSaved     = false;
+  var savedSnapshot = null;
+  var savePending = false; // a submission is in flight, awaiting confirmation
+  var pendingSnapshot = null;
+  var saveTimer   = null;
+  var summaryBox  = document.getElementById("summaryBox");
+  var summaryName = document.getElementById("summaryName");
+  var summaryColor= document.getElementById("summaryColor");
+  var summaryDot  = document.getElementById("summaryDot");
+  var summaryDays = document.getElementById("summaryDays");
+  var saveHint    = document.getElementById("saveHint");
+  var saveStatus  = document.getElementById("saveStatus");
+  var rangeStatusWrap = document.getElementById("rangeStatusWrap");
+  var rangeStatus = document.getElementById("rangeStatus");
+  var cancelRangeBtn = document.getElementById("cancelRangeBtn");
+
+  function freeCount(){ return Object.keys(state.free).length; }
+
+  function sortedFreeDays(){ return Object.keys(state.free).sort(); }
+
+  function tagFor(s){
+    if (s === "2026-12-04") return "✈ Flight out";
+    if (s === "2027-01-16") return "✈ Flight home";
+    if (isBlocked(s))       return "Alvi's wedding";
+    if (s === TRIP_START)   return "Lands";
+    return "";
+  }
+
+  // The one loop behind every "fill some days" feature — range blocks,
+  // week shortcuts and the quick-tap buttons all delegate here. Iterating
+  // tripDates (Dec 5 – Jan 15 only) is what clamps fills to the trip
+  // window: locked travel days like Jan 16 can never be added, and blocked
+  // wedding days are always skipped.
+  function selectWhere(test){
+    tripDates.forEach(function(s){ if (!isBlocked(s) && test(s)) state.free[s] = true; });
+  }
+
+  // Fill every selectable day between a and b inclusive, in either
+  // direction and across the December → January boundary (tripDates is
+  // chronological, so a block aimed at Jan 16 simply fills through Jan 15).
+  function fillRange(a, b){
+    var lo = a < b ? a : b, hi = a < b ? b : a;
+    selectWhere(function(s){ return s >= lo && s <= hi; });
+  }
+
+  function handleDayTap(key){
+    if (!inTrip(key)) return; // locked travel days never respond
+    if (isBlocked(key)) return; // Alvi's wedding days never respond
+    if (rangeAnchor){
+      if (key === rangeAnchor){
+        // Tapping the start day again turns that single day back off and
+        // cancels the pending block (single-day toggling keeps working).
+        // The "Cancel block" button is the way to drop the pending block
+        // while keeping the start day selected.
+        delete state.free[key];
+        rangeAnchor = null;
+      } else {
+        // Second tap: fill the whole block between the anchor and here.
+        fillRange(rangeAnchor, key);
+        rangeAnchor = null;
+      }
+      render();
+      return;
+    }
+    if (state.free[key]){
+      // No block pending: tapping a filled day removes just that one day,
+      // so exceptions can be carved out of a filled block one by one.
+      delete state.free[key];
+    } else {
+      // Select the day and make it the pending start of a possible block.
+      state.free[key] = true;
+      rangeAnchor = key;
+    }
+    render();
+  }
+
+  function buildMonths(){
+    monthsEl.innerHTML = "";
+    MONTHS.forEach(function(mo){
+      var wrap = document.createElement("div");
+      wrap.className = "month";
+      var h = document.createElement("h3");
+      var t = document.createElement("span"); t.textContent = mo.title;
+      var n = document.createElement("span"); n.className = "mnote"; n.textContent = mo.note;
+      h.appendChild(t); h.appendChild(n);
+      wrap.appendChild(h);
+
+      var dow = document.createElement("div");
+      dow.className = "dow";
+      ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(function(d){
+        var s = document.createElement("span");
+        if (d === "Fri") s.className = "fri";
+        s.textContent = d;
+        dow.appendChild(s);
+      });
+      wrap.appendChild(dow);
+
+      var grid = document.createElement("div");
+      grid.className = "grid";
+      var firstDow = new Date(mo.year, mo.month, 1).getDay();
+      var daysInMonth = new Date(mo.year, mo.month+1, 0).getDate();
+
+      for (var i=0;i<firstDow;i++){
+        var b = document.createElement("div"); b.className = "day blank"; grid.appendChild(b);
+      }
+      for (var d=1; d<=daysInMonth; d++){
+        var s = iso(mo.year, mo.month, d);
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "day";
+        btn.dataset.iso = s;
+        var num = document.createElement("span"); num.className = "dnum"; num.textContent = d;
+        btn.appendChild(num);
+        var tg = document.createElement("span"); tg.className = "dtag"; tg.textContent = tagFor(s);
+        btn.appendChild(tg);
+        if (!inTrip(s)){
+          btn.classList.add("is-off");
+          btn.disabled = true;
+          btn.setAttribute("aria-label", pretty(s) + " — travel day, not available");
+        } else if (isBlocked(s)){
+          btn.classList.add("is-blocked");
+          btn.disabled = true;
+          btn.setAttribute("aria-label", pretty(s) + " — Fayek unavailable, at Alvi's wedding");
+        } else {
+          btn.setAttribute("aria-pressed","false");
+          btn.setAttribute("aria-label", pretty(s) + " — tap if free");
+          btn.addEventListener("click", function(){
+            handleDayTap(this.dataset.iso);
+          });
+        }
+        grid.appendChild(btn);
+      }
+      wrap.appendChild(grid);
+      monthsEl.appendChild(wrap);
+    });
+  }
+
+  function buildRoster(){
+    nameRow.innerHTML = "";
+    PEOPLE.forEach(function(p){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "name-chip";
+      b.style.setProperty("--chip", p.hex);
+      b.setAttribute("aria-pressed", state.person === p ? "true" : "false");
+      b.setAttribute("aria-label", "I am " + p.name + " (colour: " + p.colorName + ")");
+      var dot = document.createElement("span");
+      dot.className = "dot";
+      dot.style.background = p.hex;
+      dot.setAttribute("aria-hidden", "true");
+      b.appendChild(dot);
+      var nm = document.createElement("span");
+      nm.textContent = p.name;
+      b.appendChild(nm);
+      if (state.person === p){
+        var tick = document.createElement("span");
+        tick.textContent = "✓";
+        tick.style.marginLeft = "auto";
+        tick.style.fontWeight = "800";
+        tick.setAttribute("aria-hidden", "true");
+        b.appendChild(tick);
+      }
+      b.addEventListener("click", function(){
+        state.person = p;
+        buildRoster();
+        render();
+      });
+      nameRow.appendChild(b);
+    });
+  }
+
+  function buildWeekQuick(){
+    weekQuick.innerHTML = "";
+    WEEKS.forEach(function(w){
+      if (w.id === "Dec 5") return;
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "btn small";
+      b.textContent = "Free all of " + w.id;
+      b.addEventListener("click", function(){
+        rangeAnchor = null;
+        selectWhere(function(s){ return s >= w.from && s <= w.to; });
+        render();
+      });
+      weekQuick.appendChild(b);
+    });
+  }
+
+  function weekStats(){
+    return WEEKS.map(function(w){
+      var total = 0, free = 0;
+      tripDates.forEach(function(s){
+        if (s >= w.from && s <= w.to && !isBlocked(s)){ total++; if (state.free[s]) free++; }
+      });
+      return { week:w, total:total, free:free };
+    });
+  }
+
+  function render(){
+    document.getElementById("shotCard").style.setProperty("--person", personHex());
+    document.documentElement.style.setProperty("--person", personHex());
+
+    var nm = personName();
+    if (nm){
+      displayName.textContent = nm;
+      displayName.classList.remove("is-empty");
+    } else {
+      displayName.textContent = "tap your name above";
+      displayName.classList.add("is-empty");
+    }
+    var c = freeCount();
+    displayCount.textContent = c ? "· " + c + " day" + (c===1?"":"s") + " free" : "";
+
+    var days = monthsEl.querySelectorAll(".day[data-iso]");
+    days.forEach(function(el){
+      var key = el.dataset.iso;
+      var on = !!state.free[key];
+      var isAnchor = rangeAnchor === key;
+      el.classList.toggle("is-free", on);
+      el.classList.toggle("is-anchor", isAnchor);
+      var tg = el.querySelector(".dtag");
+      if (tg) tg.textContent = isAnchor ? "Block start" : tagFor(key);
+      if (!el.disabled){
+        el.setAttribute("aria-pressed", on ? "true" : "false");
+        if (isAnchor) el.setAttribute("aria-label", pretty(key) + " — block start. Tap another day to fill everything between, or tap this day again to turn it off and cancel the block.");
+        else if (rangeAnchor) el.setAttribute("aria-label", pretty(key) + " — tap to fill the block from " + pretty(rangeAnchor) + " to here");
+        else if (on) el.setAttribute("aria-label", pretty(key) + " — free. Tap to remove just this day.");
+        else el.setAttribute("aria-label", pretty(key) + " — tap if free, or tap to start a block");
+      }
+    });
+
+    // --- Block (range) status line ---
+    if (rangeStatus && rangeStatusWrap && cancelRangeBtn){
+      if (rangeAnchor){
+        rangeStatusWrap.classList.add("is-pending");
+        rangeStatus.textContent = "Block started " + pretty(rangeAnchor) + " — now tap the last day of your block and every day in between fills in. Use “Cancel block” to keep just " + pretty(rangeAnchor) + " on its own.";
+        cancelRangeBtn.hidden = false;
+      } else {
+        rangeStatusWrap.classList.remove("is-pending");
+        rangeStatus.textContent = "Tip: tap a day, then tap another day — every day between them fills in. Tap a filled day on its own to remove just that day.";
+        cancelRangeBtn.hidden = true;
+      }
+    }
+
+    var stats = weekStats();
+    var realWeeks = stats.filter(function(s){ return s.week.id !== "Dec 5"; });
+    var maxFree = Math.max.apply(null, realWeeks.map(function(s){return s.free;}));
+    weekChips.innerHTML = "";
+    stats.forEach(function(st){
+      var chip = document.createElement("span");
+      var isBest = st.week.id !== "Dec 5" && st.free > 0 && st.free === maxFree;
+      chip.className = "wk" + (isBest ? " best" : "");
+      var pct = st.total ? Math.round(st.free/st.total*100) : 0;
+      chip.innerHTML = "<b>" + st.week.id + "</b> " + st.free + "/" + st.total + " free" +
+        '<span class="bar" aria-hidden="true"><i style="width:' + pct + '%"></i></span>';
+      weekChips.appendChild(chip);
+    });
+
+    if (c === 0){
+      footNote.innerHTML = "Tap the days you're free, then tap Save my days below — it saves right from this page.";
+    } else {
+      var best = realWeeks.filter(function(s){return s.free===maxFree && maxFree>0;})
+                          .map(function(s){return s.week.id;}).join(" + ");
+      footNote.innerHTML = "<strong>" + (nm ? nm : "I") + "</strong> — free <strong>" + c + " day" + (c===1?"":"s") +
+        "</strong> while Fayek is in Bangladesh. Strongest week: <strong>" + best + "</strong>.";
+    }
+
+    // --- In-page save: summary shows only with a name + at least one day.
+    // Save stays disabled until both are present.
+    var ready = !!nm && c > 0;
+    var currentDaysStr = sortedFreeDays().map(pretty).join(", ");
+    // If the selection changed after a save, drop back to the edit view
+    // so the friend can re-save the new selection.
+    if (isSaved && savedSnapshot){
+      var changed = savedSnapshot.name !== nm || savedSnapshot.color !== personColorName() || savedSnapshot.days !== currentDaysStr;
+      if (changed){
+        isSaved = false;
+        if (savedState) savedState.hidden = true;
+        if (saveFormView) saveFormView.hidden = false;
+      }
+    }
+    if (summaryBox){
+      summaryBox.hidden = !ready;
+      if (ready){
+        summaryName.textContent = nm;
+        summaryColor.textContent = personColorName();
+        summaryDot.style.background = personHex();
+        summaryDays.textContent = currentDaysStr;
+      }
+    }
+    if (saveBtn){
+      saveBtn.disabled = !ready || savePending;
+      if (ready) saveBtn.removeAttribute("aria-disabled");
+      else saveBtn.setAttribute("aria-disabled", "true");
+    }
+    if (saveHint && !isSaved){
+      if (!nm && c === 0) saveHint.innerHTML = "Tap your <strong>name</strong> in the list above and tap <strong>at least one free day</strong> — your name, color, and days will show up here.";
+      else if (!nm) saveHint.innerHTML = "Almost there — tap your <strong>name</strong> in the list above so Fayek knows whose days these are.";
+      else if (c === 0) saveHint.innerHTML = "Almost there — tap <strong>at least one free day</strong> on the calendar above.";
+      else saveHint.innerHTML = "Ready — check your days above, then tap <strong>Save my days</strong>.";
+    }
+    if (saveStatus && !isSaved) saveStatus.textContent = "";
+  }
+
+  document.querySelectorAll("[data-quick]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var mode = this.dataset.quick;
+      rangeAnchor = null;
+      if (mode === "clear"){ state.free = {}; }
+      else if (mode === "all"){ selectWhere(function(){ return true; }); }
+      else {
+        // Noon, not midnight: the day-of-week can't be tipped over a
+        // timezone/DST edge.
+        selectWhere(function(s){
+          var dow = new Date(s + "T12:00:00").getDay();
+          return mode === "weekends" ? (dow===5 || dow===6) : dow===5;
+        });
+      }
+      render();
+    });
+  });
+
+  document.getElementById("clearTopBtn").addEventListener("click", function(){
+    rangeAnchor = null;
+    state.free = {}; render();
+  });
+
+  if (cancelRangeBtn){
+    cancelRangeBtn.addEventListener("click", function(){
+      rangeAnchor = null;
+      render();
+    });
+  }
+
+  /* --- Saving, honestly --------------------------------------------------
+   * The form posts into a hidden iframe, so the page never navigates —
+   * but a submitted post is not a SAVED post. "Saved" is shown only when
+   * the iframe's load event confirms the post went through; if nothing
+   * comes back within 10 seconds the page says it couldn't confirm
+   * instead of claiming success. One guard (savePending / isSaved) also
+   * means a double-tap can never submit twice. */
+  function currentSelection(){
+    return { name: personName(), color: personColorName(), hex: personHex(),
+             days: sortedFreeDays().map(pretty).join(", ") };
+  }
+  function sameSelection(a, b){
+    return !!a && !!b && a.name === b.name && a.color === b.color && a.days === b.days;
+  }
+  function showSaved(snap){
+    isSaved = true;
+    savedSnapshot = snap;
+    if (savedName) savedName.textContent = snap.name;
+    if (savedColor) savedColor.textContent = snap.color;
+    if (savedDot) savedDot.style.background = snap.hex;
+    if (savedDays) savedDays.textContent = snap.days;
+    if (saveFormView) saveFormView.hidden = true;
+    if (savedState){
+      savedState.hidden = false;
+      savedState.setAttribute("tabindex", "-1");
+      savedState.focus({ preventScroll: false });
+    }
+    var panel = document.getElementById("savePanel");
+    if (panel) panel.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  function finishSave(confirmed){
+    if (!savePending) return; // stray load events (e.g. first page load) land here
+    savePending = false;
+    if (saveTimer){ clearTimeout(saveTimer); saveTimer = null; }
+    var snap = pendingSnapshot; pendingSnapshot = null;
+    if (confirmed && sameSelection(snap, currentSelection())){
+      showSaved(snap);
+      return;
+    }
+    render(); // re-enable Save for whatever the selection is now
+    if (saveStatus) saveStatus.textContent = confirmed
+      ? "Your earlier days were saved — but you've changed them since. Tap Save my days to save the new ones."
+      : "Couldn't confirm it saved — check your connection and tap Save again.";
+  }
+
+  if (saveBtn && gfForm){
+    saveBtn.addEventListener("click", function(){
+      if (saveBtn.disabled || savePending || isSaved) return;
+      var snap = currentSelection();
+      if (!snap.name || !snap.days){
+        if (saveStatus) saveStatus.textContent = "Tap your name and at least one free day first.";
+        return;
+      }
+      if (gfName) gfName.value = snap.name;
+      if (gfColor) gfColor.value = snap.color;
+      if (gfDays) gfDays.value = snap.days;
+      pendingSnapshot = snap;
+      savePending = true;
+      saveBtn.disabled = true;
+      if (saveStatus) saveStatus.textContent = "Saving…";
+      // Post to the form in the hidden iframe — the page never navigates.
+      gfForm.submit();
+      saveTimer = setTimeout(function(){ finishSave(false); }, 10000);
+    });
+    var gfIframe = document.getElementById("gfIframe");
+    if (gfIframe) gfIframe.addEventListener("load", function(){ finishSave(true); });
+  }
+
+  if (editAgainBtn){
+    editAgainBtn.addEventListener("click", function(){
+      isSaved = false;
+      savedSnapshot = null;
+      if (savedState) savedState.hidden = true;
+      if (saveFormView) saveFormView.hidden = false;
+      render();
+      var panel2 = document.getElementById("savePanel");
+      if (panel2) panel2.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+
+  buildMonths();
+  buildRoster();
+  buildWeekQuick();
+  render();
+})();
+</script>
+</body>
+</html>
