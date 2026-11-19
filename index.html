@@ -312,7 +312,30 @@
   .site-foot .dark-demo i{width:30px;height:30px;border-radius:8px;display:block;border:1px solid var(--line)}
   .site-foot .dark-cap{font-size:.85rem;color:var(--muted);margin:0}
 
-  @media (prefers-reduced-motion: reduce){ *{transition:none !important} html{scroll-behavior:auto} }
+  /* ---------- Motion pass (reel rules, Nov 19 2026) ----------
+     Feedback lands instantly (Doherty); small components run ~150ms ease-out.
+     A small squash on press reads as physical; CSS transitions stay interruptible. */
+  .day{transition:transform .15s ease-out, background .15s ease-out, border-color .15s ease-out}
+  .day:active{transform:scale(.93)}
+  .name-chip{transition:background .15s ease-out, border-color .15s ease-out, transform .15s ease-out}
+  .name-chip:active{transform:scale(.97)}
+  .btn{transition:background .15s ease-out, border-color .15s ease-out, transform .15s ease-out, opacity .15s ease-out}
+  .btn:active{transform:scale(.98)}
+  .swatch{transition:transform .15s ease-out, border-color .15s ease-out}
+  .swatch:active{transform:scale(.92)}
+
+  /* Staggered entrance: one quiet rise — steps first, then the calendar card. */
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .steps li{animation:rise .3s ease-out both}
+  .steps li:nth-child(2){animation-delay:.07s}
+  .steps li:nth-child(3){animation-delay:.14s}
+  .shot{animation:rise .3s ease-out .18s both}
+
+  /* Peak-end: the confirmed save gets one small pop — the moment people remember. */
+  @keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+  .saved-badge{animation:pop .3s ease-out both}
+
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} html{scroll-behavior:auto} }
 </style>
 </head>
 <body>
