@@ -86,7 +86,7 @@
   .day .tag{ font-size: 8.5px; font-weight: 700; letter-spacing: 0.02em; text-align: center; line-height: 1.1; padding: 0 2px; }
   .day .count{
     position: absolute; top: 4px; right: 5px; font-size: 10px; font-weight: 800;
-    background: rgb(0 0 0 / 0.45); border-radius: 999px; padding: 1px 5px;
+    background: rgb(0 0 0 / 0.45); border-radius: 999px; padding: 1px 5px; color: #eaf7ee;
   }
   .day .dots{ position: absolute; bottom: 5px; left: 0; right: 0; display: flex; justify-content: center; gap: 3px; flex-wrap: wrap; padding: 0 3px; }
   .day .dots i{ width: 6px; height: 6px; border-radius: 50%; display: block; }
@@ -175,6 +175,14 @@ const ROSTER = [
   ["Mahathir Islam", "#E5484D"], ["Mustafizur Rahman", "#00B7D4"], ["Rafio", "#F5C518"]
 ];
 const COLORS = Object.fromEntries(ROSTER);
+// Overlap fills are shades of green only: the more friends free, the darker the green.
+const GREEN_SHADES = ["#d3f0dc", "#a9dfba", "#78c48f", "#4aa866", "#2c8a46", "#1a6b32", "#125226", "#0d3f1d", "#082e15", "#051f0e"];
+function greenFor(count){
+  return {
+    bg: GREEN_SHADES[Math.min(count, GREEN_SHADES.length) - 1],
+    fg: count <= 2 ? "#0a3318" : "#eaf7ee"
+  };
+}
 const BLOCKED = {
   "2026-12-21": "Alvi's wedding", "2026-12-22": "Alvi's wedding", "2026-12-23": "Alvi's wedding",
   "2026-12-24": "Alvi's wedding", "2026-12-25": "Alvi's wedding"
@@ -296,10 +304,10 @@ function buildGrid(elId, year, month){
     } else if (key < TRIP_START || key > TRIP_END){
       html += `<div class="day outside"><span>${d}</span></div>`;
     } else {
-      const layers = free.map(n => `linear-gradient(${COLORS[n]}66, ${COLORS[n]}66)`).join(",");
+      const shade = free.length ? greenFor(free.length) : null;
       const dots = free.map(n => `<i style="background:${COLORS[n]}"></i>`).join("");
       const count = free.length >= 2 ? `<span class="count">${free.length}</span>` : "";
-      html += `<div class="day" data-day="${key}" ${layers ? `style="background:${layers}"` : ""}><span>${d}</span>${count}<span class="dots">${dots}</span></div>`;
+      html += `<div class="day" data-day="${key}" ${shade ? `style="background:${shade.bg};color:${shade.fg}"` : ""}><span>${d}</span>${count}<span class="dots">${dots}</span></div>`;
     }
   }
   el.innerHTML = html;
